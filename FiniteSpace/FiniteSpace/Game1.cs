@@ -16,6 +16,17 @@ namespace FiniteSpace {
     public class Game1 : Microsoft.Xna.Framework.Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GameStates gameState = GameStates.TitleScreen;
+        Texture2D titleScreen;
+        Texture2D spriteSheet;
+
+
+        enum GameStates {
+            TitleScreen,
+            Playing,
+            PlayerDead,
+            GameOver
+        }
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -43,6 +54,8 @@ namespace FiniteSpace {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
+            spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
         }
 
         /// <summary>
@@ -64,7 +77,18 @@ namespace FiniteSpace {
                 this.Exit();
 
             // TODO: Add your update logic here
+            switch(this.gameState){
+                case GameStates.TitleScreen:
+                    break;
+                case GameStates.Playing:
+                    break;
+                case GameStates.PlayerDead:
+                    break;
+                case GameStates.GameOver:
+                    break;
+            }
 
+            // call the base update - should be at the end
             base.Update(gameTime);
         }
 
@@ -76,7 +100,23 @@ namespace FiniteSpace {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+            if(gameState == GameStates.TitleScreen){
+                spriteBatch.Draw(titleScreen, new Rectangle(0,0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
+            }
+
+            if((gameState == GameStates.Playing)  || (gameState == GameStates.PlayerDead) || (gameState == GameStates.GameOver)){
+
+            }
+
+            if(gameState == GameStates.GameOver){
+
+            }
+
+            spriteBatch.End();
+
+            // this should be at the end of the logic
             base.Draw(gameTime);
         }
     }
