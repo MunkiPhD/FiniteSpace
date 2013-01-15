@@ -22,6 +22,7 @@ namespace FiniteSpace {
         StarField starField;
         AsteroidManager asteroidManager;
         PlayerManager playerManager;
+        EnemyManager enemyManager;
 
 
         enum GameStates {
@@ -70,6 +71,7 @@ namespace FiniteSpace {
             starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 30f), spriteSheet, new Rectangle(0, 450, 2, 2));
             asteroidManager = new AsteroidManager(10, spriteSheet, new Rectangle(0, 0, 50, 50), 20, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
             playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+            enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
         }
 
         /// <summary>
@@ -100,6 +102,7 @@ namespace FiniteSpace {
                     starField.Update(gameTime);
                     asteroidManager.Update(gameTime);
                     playerManager.Update(gameTime);
+                    enemyManager.Update(gameTime);
                     break;
                 case GameStates.PlayerDead:
                     break;
@@ -131,6 +134,7 @@ namespace FiniteSpace {
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
+                enemyManager.Draw(spriteBatch);
             }
 
             if(gameState == GameStates.GameOver){
