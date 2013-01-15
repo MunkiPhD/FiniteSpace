@@ -16,9 +16,11 @@ namespace FiniteSpace {
     public class Game1 : Microsoft.Xna.Framework.Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        GameStates gameState = GameStates.TitleScreen;
+        GameStates gameState = GameStates.Playing;
         Texture2D titleScreen;
         Texture2D spriteSheet;
+        StarField starField;
+        AsteroidManager asteroidManager;
 
 
         enum GameStates {
@@ -28,10 +30,14 @@ namespace FiniteSpace {
             GameOver
         }
 
+
+
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
+
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -45,6 +51,8 @@ namespace FiniteSpace {
             base.Initialize();
         }
 
+
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -56,6 +64,11 @@ namespace FiniteSpace {
             // TODO: use this.Content to load your game content here
             titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
+
+            // initializations
+            starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 30f), spriteSheet, new Rectangle(0, 450, 2, 2));
+            asteroidManager = new AsteroidManager(10, spriteSheet, new Rectangle(0, 0, 50, 50), 20, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
+
         }
 
         /// <summary>
@@ -65,6 +78,8 @@ namespace FiniteSpace {
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
+
+
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -81,6 +96,8 @@ namespace FiniteSpace {
                 case GameStates.TitleScreen:
                     break;
                 case GameStates.Playing:
+                    starField.Update(gameTime);
+                    asteroidManager.Update(gameTime);
                     break;
                 case GameStates.PlayerDead:
                     break;
@@ -92,12 +109,14 @@ namespace FiniteSpace {
             base.Update(gameTime);
         }
 
+
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -107,7 +126,8 @@ namespace FiniteSpace {
             }
 
             if((gameState == GameStates.Playing)  || (gameState == GameStates.PlayerDead) || (gameState == GameStates.GameOver)){
-
+                starField.Draw(spriteBatch);
+                asteroidManager.Draw(spriteBatch);
             }
 
             if(gameState == GameStates.GameOver){
