@@ -108,9 +108,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsteroidManager.cs" />
+    <Compile Include="PlayerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="ShotManager.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="StarField.cs" />
   </ItemGroup>
