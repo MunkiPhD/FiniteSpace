@@ -30,7 +30,7 @@ namespace FiniteSpace {
 
             for(int x = 1; x < frameCount; x++) {
                 EnemySprite.AddFrame(new Rectangle(
-                    initialFrame.X - (initialFrame.Width * x),
+                    initialFrame.X + (initialFrame.Width * x),
                     initialFrame.Y,
                     initialFrame.Width,
                     initialFrame.Height));

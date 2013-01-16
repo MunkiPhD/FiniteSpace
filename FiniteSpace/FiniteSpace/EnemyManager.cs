@@ -129,7 +129,7 @@ namespace FiniteSpace {
         /// </summary>
         /// <param name="path"></param>
         public void SpawnEnemy(int path) {
-            Enemy thisEnemy = new Enemy(_texture, _pathWaypoints[path][0], _initialFrame,0);// _frameCount);
+            Enemy thisEnemy = new Enemy(_texture, _pathWaypoints[path][0], _initialFrame, _frameCount);
 
             for(int x = 0; x < _pathWaypoints[path].Count(); x++) {
                 thisEnemy.AddWaypoint(_pathWaypoints[path][x]);
