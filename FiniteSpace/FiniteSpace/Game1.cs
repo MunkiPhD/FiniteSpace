@@ -23,6 +23,7 @@ namespace FiniteSpace {
         AsteroidManager asteroidManager;
         PlayerManager playerManager;
         EnemyManager enemyManager;
+        ExplosionManager explosionManager;
 
 
         enum GameStates {
@@ -72,6 +73,7 @@ namespace FiniteSpace {
             asteroidManager = new AsteroidManager(10, spriteSheet, new Rectangle(0, 0, 50, 50), 20, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
             playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+            explosionManager = new ExplosionManager(spriteSheet, new Rectangle(0, 100, 50, 50), 3, new Rectangle(0, 450, 2, 2));
         }
 
         /// <summary>
@@ -103,6 +105,7 @@ namespace FiniteSpace {
                     asteroidManager.Update(gameTime);
                     playerManager.Update(gameTime);
                     enemyManager.Update(gameTime);
+                    explosionManager.Update(gameTime);
                     break;
                 case GameStates.PlayerDead:
                     break;
@@ -135,6 +138,7 @@ namespace FiniteSpace {
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
                 enemyManager.Draw(spriteBatch);
+                explosionManager.Draw(spriteBatch);
             }
 
             if(gameState == GameStates.GameOver){
