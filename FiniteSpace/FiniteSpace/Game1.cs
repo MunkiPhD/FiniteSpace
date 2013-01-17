@@ -19,6 +19,7 @@ namespace FiniteSpace {
         GameStates gameState = GameStates.Playing;
         Texture2D titleScreen;
         Texture2D spriteSheet;
+        Texture2D gameBackground;
         StarField starField;
         AsteroidManager asteroidManager;
         PlayerManager playerManager;
@@ -68,9 +69,10 @@ namespace FiniteSpace {
             // TODO: use this.Content to load your game content here
             titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
+            gameBackground = Content.Load<Texture2D>(@"Backgrounds\Milkyway");
 
             // initializations
-            starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 80f), spriteSheet, new Rectangle(0, 450, 2, 2));
+            starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 60f), spriteSheet, new Rectangle(0, 450, 2, 2));
             asteroidManager = new AsteroidManager(10, spriteSheet, new Rectangle(0, 0, 50, 50), 20, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
             playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
@@ -131,7 +133,7 @@ namespace FiniteSpace {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Purple);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -141,11 +143,14 @@ namespace FiniteSpace {
             }
 
             if ((gameState == GameStates.Playing) || (gameState == GameStates.PlayerDead) || (gameState == GameStates.GameOver)) {
+                spriteBatch.Draw(gameBackground, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
+
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
                 enemyManager.Draw(spriteBatch);
                 explosionManager.Draw(spriteBatch);
+
             }
 
             if (gameState == GameStates.GameOver) {
