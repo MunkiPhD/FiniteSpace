@@ -24,6 +24,7 @@ namespace FiniteSpace {
         PlayerManager playerManager;
         EnemyManager enemyManager;
         ExplosionManager explosionManager;
+        CollisionManager collisionManager;
 
 
         enum GameStates {
@@ -74,6 +75,7 @@ namespace FiniteSpace {
             playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             explosionManager = new ExplosionManager(spriteSheet, new Rectangle(0, 100, 50, 50), 3, new Rectangle(0, 450, 2, 2));
+            collisionManager = new CollisionManager(asteroidManager, playerManager, enemyManager, explosionManager);
         }
 
         /// <summary>
@@ -106,6 +108,7 @@ namespace FiniteSpace {
                     playerManager.Update(gameTime);
                     enemyManager.Update(gameTime);
                     explosionManager.Update(gameTime);
+                    collisionManager.CheckCollisions(); // check collisions after everything else has been updated
                     break;
                 case GameStates.PlayerDead:
                     break;
