@@ -127,6 +127,9 @@ namespace FiniteSpace {
                     _initialColor,
                     Color.RosyBrown));
             }
+
+            // play a sound for the explosion
+            SoundManager.PlayExplosion();
         }
     }
 }

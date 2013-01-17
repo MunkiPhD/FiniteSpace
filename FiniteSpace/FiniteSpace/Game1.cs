@@ -76,6 +76,8 @@ namespace FiniteSpace {
             enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             explosionManager = new ExplosionManager(spriteSheet, new Rectangle(0, 100, 50, 50), 3, new Rectangle(0, 450, 2, 2));
             collisionManager = new CollisionManager(asteroidManager, playerManager, enemyManager, explosionManager);
+
+            SoundManager.Initialize(Content);
         }
 
         /// <summary>

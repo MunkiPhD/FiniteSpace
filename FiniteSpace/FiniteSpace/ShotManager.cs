@@ -72,6 +72,12 @@ namespace FiniteSpace {
 
             thisShot.collisionRadius = _collitionRadius;
             Shots.Add(thisShot);
-        }// end fireShot()
+
+            // play a shot sound effect
+            if (playerFired)
+                SoundManager.PlayPlayerShot();
+            else
+                SoundManager.PlayEnemyShot();
+        } // end fireShot()
     }
 }
