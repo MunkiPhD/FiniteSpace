@@ -23,6 +23,24 @@ namespace FiniteSpace {
         }
 
 
+
+        /// <summary>
+        /// Checks all the collisions that could occur in the game
+        /// </summary>
+        public void CheckCollisions() {
+            CheckShotToEnemyCollisions();
+            CheckShotToAsteroidCollisions();
+
+            // if the player is still alive, we can run checks against him
+            if (!_playerManager.Destroyed) {
+                CheckShotToPlayerCollisions();
+                CheckEnemyToPlayerCollisions();
+                CheckAsteroidToPlayerCollisions();
+            }
+        }
+
+
+
         /// <summary>
         /// Checks whether shots to an enemy collided
         /// </summary>
@@ -44,7 +62,7 @@ namespace FiniteSpace {
         /// <summary>
         /// Checks whether a player shot hit an asteroid
         /// </summary>
-        private void CheckShotToAsteroid() {
+        private void CheckShotToAsteroidCollisions() {
             foreach (Sprite shot in _playerManager.PlayerShotManager.Shots) {
                 foreach (Sprite asteroid in _asteroidManager.Asteroids) {
                     if(shot.IsCircleColliding(asteroid.Center, asteroid.collisionRadius)){
@@ -54,6 +72,54 @@ namespace FiniteSpace {
                 }
             }
         }
+
+
+
+        /// <summary>
+        /// Checks shots fired at the player
+        /// </summary>
+        private void CheckShotToPlayerCollisions() {
+            foreach (Sprite shot in _enemyManager.EnemyShotManager.Shots) {
+                if (shot.IsCircleColliding(_playerManager.PlayerSprite.Center, _playerManager.PlayerSprite.collisionRadius)) {
+                    shot.Location = _offScreen;
+                    _playerManager.Destroyed = true;
+                    _explosionManager.AddExplosion(_playerManager.PlayerSprite.Center, Vector2.Zero);
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Checks if an enemy has collided with a player
+        /// </summary>
+        private void CheckEnemyToPlayerCollisions() {
+            foreach (Enemy enemy in _enemyManager.Enemies) {
+                if (enemy.EnemySprite.IsCircleColliding(_playerManager.PlayerSprite.Center, _playerManager.PlayerSprite.collisionRadius)) {
+                    enemy.Destroyed = true;
+                    _explosionManager.AddExplosion(enemy.EnemySprite.Center, enemy.EnemySprite.Velocity / 10);
+                    _playerManager.Destroyed = true;
+                    _explosionManager.AddExplosion(_playerManager.PlayerSprite.Center, Vector2.Zero);
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Checks if a player has hit the rock of a thousand suns
+        /// </summary>
+        private void CheckAsteroidToPlayerCollisions() {
+            foreach (Sprite asteroid in _asteroidManager.Asteroids) {
+                if (asteroid.IsCircleColliding(_playerManager.PlayerSprite.Center, _playerManager.PlayerSprite.collisionRadius)) {
+                    _playerManager.Destroyed = true;
+                    _explosionManager.AddExplosion(_playerManager.PlayerSprite.Center, Vector2.Zero);
+                    _explosionManager.AddExplosion(asteroid.Center, asteroid.Velocity / 10);
+                    asteroid.Location = _offScreen;
+                }
+            }
+        }
+
 
     } // end CollisionManager
 } // end namespace
