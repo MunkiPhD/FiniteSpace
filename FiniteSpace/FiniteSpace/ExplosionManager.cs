@@ -98,7 +98,7 @@ namespace FiniteSpace {
             Vector2 pieceLocation = location - new Vector2(_pieceRectangles[0].Width / 2, _pieceRectangles[0].Height / 2); 
             int pieces = rand.Next(_minPieceCount, _maxPieceCount + 1);
 
-            // add a piece for each number of random pieces generated to be added
+            // add a sprite animation piece for each number of random pieces generated to be added
             for (int x = 0; x < pieces; x++) {
                 ExplosionParticles.Add(new Particle(
                     pieceLocation,
@@ -114,6 +114,7 @@ namespace FiniteSpace {
 
             int points = rand.Next(_minPointCount, _maxPointCount + 1);
 
+            // this adds the actual pieces
             for (int x = 0; x < points; x++) {
                 ExplosionParticles.Add(new Particle(
                     location,
@@ -124,7 +125,7 @@ namespace FiniteSpace {
                     _explosionMaxSpeed,
                     _durationCount,
                     _initialColor,
-                    _finalColor));
+                    Color.RosyBrown));
             }
         }
     }

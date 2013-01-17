@@ -14,7 +14,7 @@ namespace FiniteSpace {
         public int LivesRemaining = 3;
         public bool Destroyed = false;
 
-        private float _playerSpeed = 160.0f;
+        private float _playerSpeed = 260.0f;
         private Rectangle _playerAreaLimit;
         private Vector2 _gunOffset = new Vector2(25, 10);
         private float _shotTimer = 0.0f;
