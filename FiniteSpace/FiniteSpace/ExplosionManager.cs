@@ -50,10 +50,11 @@ namespace FiniteSpace {
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime) {
             for (int x = ExplosionParticles.Count - 1; x >= 0; x--) {
-                if (ExplosionParticles[x].isActive)
+                if (ExplosionParticles[x].isActive) 
                     ExplosionParticles[x].Update(gameTime);
                 else
                     ExplosionParticles.RemoveAt(x);
+                
             }
         }
 
@@ -95,7 +96,7 @@ namespace FiniteSpace {
         /// <param name="momentum">The momentum of the explosion</param>
         public void AddExplosion(Vector2 location, Vector2 momentum) {
             // we want to place the middle of the explosion at the location specified, so get half the width and height
-            Vector2 pieceLocation = location - new Vector2(_pieceRectangles[0].Width / 2, _pieceRectangles[0].Height / 2); 
+            Vector2 pieceLocation = location - new Vector2(_pieceRectangles[0].Width / 2, _pieceRectangles[0].Height / 2);
             int pieces = rand.Next(_minPieceCount, _maxPieceCount + 1);
 
             // add a sprite animation piece for each number of random pieces generated to be added
@@ -105,7 +106,7 @@ namespace FiniteSpace {
                     _texture,
                     _pieceRectangles[rand.Next(0, _pieceRectangles.Count)],
                     RandomDirection(_pieceSpeedScale) + momentum,
-                    Vector2.Zero,
+                    momentum,
                     _explosionMaxSpeed,
                     _durationCount,
                     _initialColor,
