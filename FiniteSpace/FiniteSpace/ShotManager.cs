@@ -21,6 +21,7 @@ namespace FiniteSpace {
             _collitionRadius = collisionRadius;
             _shotSpeed = shotSpeed;
             _screenBounds = screenBounds;
+            _frameCount = frameCount;
         }
 
 
