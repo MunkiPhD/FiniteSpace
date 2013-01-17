@@ -16,7 +16,7 @@ namespace FiniteSpace {
     public class Game1 : Microsoft.Xna.Framework.Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        GameStates gameState = GameStates.Playing;
+        GameStates gameState = GameStates.TitleScreen;
         Texture2D titleScreen;
         Texture2D spriteSheet;
         Texture2D gameBackground;
@@ -27,6 +27,15 @@ namespace FiniteSpace {
         ExplosionManager explosionManager;
         CollisionManager collisionManager;
 
+        SpriteFont pericles14;
+        private float _playerDeathDelayTime = 5f;
+        private float _playerDeathTimer = 0f;
+        private float _titleScreenTimer = 0f;
+        private float _titleScreenDelayTime = 1f;
+        private int _playerStartingLives = 3;
+        private Vector2 _playerStartLocation = new Vector2(390, 550);
+        private Vector2 _scoreLocation = new Vector2(20, 10);
+        private Vector2 _livesLocation = new Vector2(20, 25);
 
         enum GameStates {
             TitleScreen,
@@ -70,6 +79,7 @@ namespace FiniteSpace {
             titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             gameBackground = Content.Load<Texture2D>(@"Backgrounds\Milkyway");
+            pericles14 = Content.Load<SpriteFont>(@"Fonts\Pericles14");
 
             // initializations
             starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 60f), spriteSheet, new Rectangle(0, 450, 2, 2));
@@ -105,22 +115,67 @@ namespace FiniteSpace {
             // TODO: Add your update logic here
             switch (this.gameState) {
                 case GameStates.TitleScreen:
+                    _titleScreenTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (_titleScreenTimer >= _titleScreenDelayTime) {
+                        if ((Keyboard.GetState().IsKeyDown(Keys.Space)) || (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)) {
+                            playerManager.LivesRemaining = _playerStartingLives;
+                            playerManager.PlayerScore = 0;
+                            ResetGame();
+                            gameState = GameStates.Playing;
+                        }
+                    }
                     break;
+
                 case GameStates.Playing:
                     starField.Update(gameTime);
                     asteroidManager.Update(gameTime);
                     playerManager.Update(gameTime);
                     enemyManager.Update(gameTime);
                     explosionManager.Update(gameTime);
-
-                    GamepadVibration.Update(gameTime);
                     collisionManager.CheckCollisions(); // check collisions after everything else has been updated
+
+                    if (playerManager.Destroyed) {
+                        _playerDeathTimer = 0f;
+                        enemyManager.Active = false;
+                        playerManager.LivesRemaining--;
+                        if (playerManager.LivesRemaining < 0) {
+                            gameState = GameStates.GameOver;
+                        } else {
+                            gameState = GameStates.PlayerDead;
+                        }
+
+                    } else {
+                        enemyManager.Active = true;
+                    }
                     break;
+
                 case GameStates.PlayerDead:
+                    _playerDeathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    starField.Update(gameTime);
+                    asteroidManager.Update(gameTime);
+                    enemyManager.Update(gameTime);
+                    playerManager.Update(gameTime);
+                    playerManager.PlayerShotManager.Update(gameTime);
+                    explosionManager.Update(gameTime);
+                    if (_playerDeathTimer > _playerDeathDelayTime) {
+                        ResetGame();
+                        gameState = GameStates.Playing;
+                    }
                     break;
+
                 case GameStates.GameOver:
+                    _playerDeathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    starField.Update(gameTime);
+                    asteroidManager.Update(gameTime);
+                    enemyManager.Update(gameTime);
+                    playerManager.PlayerShotManager.Update(gameTime);
+                    explosionManager.Update(gameTime);
+                    if (_playerDeathTimer >= _playerDeathDelayTime)
+                        gameState = GameStates.TitleScreen;
                     break;
             }
+
+            GamepadVibration.Update(gameTime);
 
             // call the base update - should be at the end
             base.Update(gameTime);
@@ -143,6 +198,7 @@ namespace FiniteSpace {
             }
 
             if ((gameState == GameStates.Playing) || (gameState == GameStates.PlayerDead) || (gameState == GameStates.GameOver)) {
+                // this draws the background
                 spriteBatch.Draw(gameBackground, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
 
                 starField.Draw(spriteBatch);
@@ -151,10 +207,15 @@ namespace FiniteSpace {
                 enemyManager.Draw(spriteBatch);
                 explosionManager.Draw(spriteBatch);
 
+                // draw the score and the lives remaining
+                spriteBatch.DrawString(pericles14, "Score: " + playerManager.PlayerScore.ToString(), _scoreLocation, Color.White);
+                if (playerManager.LivesRemaining >= 0)
+                    spriteBatch.DrawString(pericles14, "Lives: " + playerManager.LivesRemaining.ToString(), _livesLocation, Color.White);
             }
 
             if (gameState == GameStates.GameOver) {
-
+                string textToDisplay = "G A M E   O V E R";
+                spriteBatch.DrawString(pericles14, textToDisplay, new Vector2(this.Window.ClientBounds.Width / 2 - pericles14.MeasureString(textToDisplay).X / 2, 50), Color.White);
             }
 
             spriteBatch.End();
@@ -162,5 +223,18 @@ namespace FiniteSpace {
             // this should be at the end of the logic
             base.Draw(gameTime);
         }
+
+
+        private void ResetGame() {
+            playerManager.PlayerSprite.Location = _playerStartLocation;
+            foreach (Sprite asteroid in asteroidManager.Asteroids) {
+                asteroid.Location = new Vector2(-500, 500);
+            }
+            enemyManager.Enemies.Clear();
+            enemyManager.Active = false;
+            playerManager.PlayerShotManager.Shots.Clear();
+            enemyManager.EnemyShotManager.Shots.Clear();
+            playerManager.Destroyed = false;
+        } // end resetGame()
     }
 }

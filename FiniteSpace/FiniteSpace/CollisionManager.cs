@@ -83,7 +83,7 @@ namespace FiniteSpace {
                     shot.Location = _offScreen;
                     _playerManager.Destroyed = true;
                     _explosionManager.AddExplosion(_playerManager.PlayerSprite.Center, Vector2.Zero);
-                    GamepadVibration.VibrateController(PlayerIndex.One, 0.5f, 0.5f, 1);
+                    GamepadVibration.VibrateController(PlayerIndex.One, 0.5f, 0.5f, 0.25f);
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace FiniteSpace {
                     _explosionManager.AddExplosion(enemy.EnemySprite.Center, enemy.EnemySprite.Velocity / 10);
                     _playerManager.Destroyed = true;
                     _explosionManager.AddExplosion(_playerManager.PlayerSprite.Center, Vector2.Zero);
-                    GamepadVibration.VibrateController(PlayerIndex.One, 0.5f, 0.5f, 1);
+                    GamepadVibration.VibrateController(PlayerIndex.One, 0.5f, 0.5f, 0.25f);
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace FiniteSpace {
                     _explosionManager.AddExplosion(_playerManager.PlayerSprite.Center, Vector2.Zero);
                     _explosionManager.AddExplosion(asteroid.Center, asteroid.Velocity / 10);
                     asteroid.Location = _offScreen;
-                    GamepadVibration.VibrateController(PlayerIndex.One, 1, 1, 1);
+                    GamepadVibration.VibrateController(PlayerIndex.One, 0.5f, 0.5f, 0.25f);
                 }
             }
         }

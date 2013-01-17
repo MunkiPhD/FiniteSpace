@@ -25,7 +25,7 @@ namespace FiniteSpace {
         private float _shipShotChance = 0.2f;
         private List<List<Vector2>> _pathWaypoints = new List<List<Vector2>>();
         private Dictionary<int, int> _waveSpawns = new Dictionary<int,int>();
-        public bool Active = true;
+        public bool Active = false;
         private Random rand = new Random();
 
 
