@@ -70,7 +70,7 @@ namespace FiniteSpace {
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
 
             // initializations
-            starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 30f), spriteSheet, new Rectangle(0, 450, 2, 2));
+            starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 80f), spriteSheet, new Rectangle(0, 450, 2, 2));
             asteroidManager = new AsteroidManager(10, spriteSheet, new Rectangle(0, 0, 50, 50), 20, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
             playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
@@ -97,11 +97,11 @@ namespace FiniteSpace {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
             // Allows the game to exit
-            if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
-            switch(this.gameState){
+            switch (this.gameState) {
                 case GameStates.TitleScreen:
                     break;
                 case GameStates.Playing:
@@ -110,6 +110,8 @@ namespace FiniteSpace {
                     playerManager.Update(gameTime);
                     enemyManager.Update(gameTime);
                     explosionManager.Update(gameTime);
+
+                    GamepadVibration.Update(gameTime);
                     collisionManager.CheckCollisions(); // check collisions after everything else has been updated
                     break;
                 case GameStates.PlayerDead:
@@ -134,11 +136,11 @@ namespace FiniteSpace {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            if(gameState == GameStates.TitleScreen){
-                spriteBatch.Draw(titleScreen, new Rectangle(0,0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
+            if (gameState == GameStates.TitleScreen) {
+                spriteBatch.Draw(titleScreen, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
             }
 
-            if((gameState == GameStates.Playing)  || (gameState == GameStates.PlayerDead) || (gameState == GameStates.GameOver)){
+            if ((gameState == GameStates.Playing) || (gameState == GameStates.PlayerDead) || (gameState == GameStates.GameOver)) {
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
@@ -146,7 +148,7 @@ namespace FiniteSpace {
                 explosionManager.Draw(spriteBatch);
             }
 
-            if(gameState == GameStates.GameOver){
+            if (gameState == GameStates.GameOver) {
 
             }
 
