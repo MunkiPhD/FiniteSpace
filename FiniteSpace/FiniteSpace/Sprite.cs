@@ -9,13 +9,13 @@ namespace FiniteSpace {
     class Sprite {
         public Texture2D texture;
         protected List<Rectangle> frames = new List<Rectangle>();
-        private int _frameWidth = 0;
-        private int _frameHeight = 0;
+        protected int _frameWidth = 0;
+        protected int _frameHeight = 0;
         private int _currentFrame = 0;
-        private float _frameTime = 0.1f;
-        private float _timeForCurrentFrame = 0.0f;
+        protected float _frameTime = 0.1f;
+        protected float _timeForCurrentFrame = 0.0f;
         private Color _tintColor = Color.White;
-        private float _rotation = 0.0f;
+        protected float _rotation = 0.0f;
 
         public int collisionRadius = 0;
         public int boundingXPadding = 0;
@@ -51,7 +51,7 @@ namespace FiniteSpace {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _timeForCurrentFrame += elapsed;
 
-            if(_timeForCurrentFrame >= _frameTime) {
+            if (_timeForCurrentFrame >= _frameTime) {
                 _currentFrame = (_currentFrame + 1) % (frames.Count);
                 _timeForCurrentFrame = 0.0f;
             }
@@ -91,7 +91,7 @@ namespace FiniteSpace {
         /// <param name="otherRadius">The radius of the object</param>
         /// <returns>True if they intersect, false otherwise</returns>
         public bool IsCircleColliding(Vector2 otherCenter, float otherRadius) {
-            if(Vector2.Distance(Center, otherCenter) < (collisionRadius + otherRadius))
+            if (Vector2.Distance(Center, otherCenter) < (collisionRadius + otherRadius))
                 return true;
             else
                 return false;
@@ -118,7 +118,7 @@ namespace FiniteSpace {
             }
         }
 
-        
+
 
 
         public Vector2 Location {

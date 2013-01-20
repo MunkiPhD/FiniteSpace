@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FiniteSpace {
     class PlayerManager {
-        public Sprite PlayerSprite;
+        public PlayerSprite PlayerSprite;
         public ShotManager PlayerShotManager;
         public long PlayerScore = 0;
         public int LivesRemaining = 3;
@@ -19,16 +19,16 @@ namespace FiniteSpace {
         private Vector2 _gunOffset = new Vector2(25, 10);
         private float _shotTimer = 0.0f;
         private float _minShotTimer = 0.2f;
-        private int _playerRadius = 15;
+        private int _playerRadius = 25;
 
         public PlayerManager(Texture2D texture, Rectangle initialFrame, int frameCount, Rectangle screenBounds) {
-            PlayerSprite = new Sprite(new Vector2(500, 500), texture, initialFrame, Vector2.Zero);
+            PlayerSprite = new PlayerSprite(new Vector2(500, 500), texture, initialFrame, Vector2.Zero, frameCount);
             PlayerShotManager = new ShotManager(texture, new Rectangle(0, 300, 5, 5), 4, 2, 250f, screenBounds);
             _playerAreaLimit = new Rectangle(0, screenBounds.Height / 2, screenBounds.Width, screenBounds.Height / 2);
 
             for(int x = 1; x < frameCount; x++) {
                 PlayerSprite.AddFrame(new Rectangle(
-                    initialFrame.X + (initialFrame.Width + x),
+                    initialFrame.X + (initialFrame.Width * x),
                     initialFrame.Y,
                     initialFrame.Width,
                     initialFrame.Height));
@@ -55,6 +55,8 @@ namespace FiniteSpace {
 
                 PlayerSprite.Velocity.Normalize();
                 PlayerSprite.Velocity *= _playerSpeed;
+
+                                        
                 PlayerSprite.Update(gameTime);
                 ImposeMovementLimits();
             }

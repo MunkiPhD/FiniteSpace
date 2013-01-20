@@ -41,7 +41,7 @@ namespace FiniteSpace {
         /// </summary>
         public static void PlayExplosion() {
             try {
-                _explosions[rand.Next(0, _explosionCount)].Play();
+           //     _explosions[rand.Next(0, _explosionCount)].Play();
             } catch (Exception e) {
                 Debug.Write("PlayExplosion() Failed: " + e.Message);
             }
@@ -53,7 +53,7 @@ namespace FiniteSpace {
         /// </summary>
         public static void PlayPlayerShot() {
             try {
-                _playerShot.Play();
+            //    _playerShot.Play();
             } catch (Exception e) {
                 Debug.Write("PlayPlayerShot() Failed: " + e.Message);
             }
@@ -66,7 +66,7 @@ namespace FiniteSpace {
         /// </summary>
         public static void PlayEnemyShot() {
             try {
-                _enemyShot.Play();
+            //    _enemyShot.Play();
             } catch (Exception e) {
                 Debug.Write("PlayEnemyShot() Failed: " + e.Message);
             }

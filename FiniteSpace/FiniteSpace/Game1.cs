@@ -19,6 +19,7 @@ namespace FiniteSpace {
         GameStates gameState = GameStates.TitleScreen;
         Texture2D titleScreen;
         Texture2D spriteSheet;
+        Texture2D fighter;
         Texture2D gameBackground;
         StarField starField;
         AsteroidManager asteroidManager;
@@ -80,11 +81,13 @@ namespace FiniteSpace {
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             gameBackground = Content.Load<Texture2D>(@"Backgrounds\Milkyway");
             pericles14 = Content.Load<SpriteFont>(@"Fonts\Pericles14");
+            fighter = Content.Load<Texture2D>(@"Textures\fighter");
 
             // initializations
             starField = new StarField(this.Window.ClientBounds.Width, this.Window.ClientBounds.Height, 200, new Vector2(0, 60f), spriteSheet, new Rectangle(0, 450, 2, 2));
             asteroidManager = new AsteroidManager(10, spriteSheet, new Rectangle(0, 0, 50, 50), 20, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
-            playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+            //playerManager = new PlayerManager(spriteSheet, new Rectangle(0, 150, 50, 50), 3, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+            playerManager = new PlayerManager(fighter, new Rectangle(0, 0, 50, 50), 9, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
             explosionManager = new ExplosionManager(spriteSheet, new Rectangle(0, 100, 50, 50), 3, new Rectangle(0, 450, 2, 2));
             collisionManager = new CollisionManager(asteroidManager, playerManager, enemyManager, explosionManager);
@@ -238,3 +241,4 @@ namespace FiniteSpace {
         } // end resetGame()
     }
 }
+
